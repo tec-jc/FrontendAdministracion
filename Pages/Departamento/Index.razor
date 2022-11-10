@@ -1,0 +1,57 @@
+﻿@page "/departamento/index"
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<MudText Typo="Typo.h2" Class="ml">Departamentos</MudText>
+
+<MudTable Items="@departamentos" Hover="true" Bordered="true" Striped="true">
+    <ToolBarContent>
+        @*<MudText Typo="Typo.h6">Lista de Registros</MudText>
+        <MudSpacer />*@
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="goAdd" />
+        <MudSpacer />
+        <MudTextField @bind-Value="searchText" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Nombre</MudTh>
+        <MudTh>Zona</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Nombre">@context.Nombre</MudTd>
+        @switch(context.Zona){
+            case 1:
+                <MudTd DataLabel="Zona">Occidental</MudTd>
+                break;
+            case 2:
+                <MudTd DataLabel="Zona">Central</MudTd>
+                break;
+            case 3:
+                <MudTd DataLabel="Zona">Oriental</MudTd>
+                break;
+        }
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private IEnumerable<Departamento> departamentos = new List<Departamento>();
+    private string searchText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await getAll();
+    }
+
+    private async Task getAll(){
+        var httpResponse = await httpClient.GetStringAsync("departamento");
+        departamentos = JsonSerializer.Deserialize<IEnumerable<Departamento>>(httpResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    }
+
+    private void goAdd(){
+        NavigationManager.NavigateTo("departamento/agregar");
+    }
+}
