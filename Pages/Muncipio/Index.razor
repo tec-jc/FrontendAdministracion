@@ -14,12 +14,14 @@
         <MudTh>Id</MudTh>
         <MudTh>Nombre</MudTh>
         <MudTh>Departamento</MudTh>
+        <MudTh>Descripción</MudTh>
         <MudTh>Acciones</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Nombre">@context.Nombre</MudTd>
         <MudTd DataLabel="Departamento">@context.Departamento.Nombre</MudTd>
+        <MudTd DataLabel="Descripcion">@context.Descripcion</MudTd>
         <MudTd>
             <MudButton Link="@($"/municipio/editar/{context.Id}")" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Tertiary"
                        Class="text-center">Editar</MudButton>
